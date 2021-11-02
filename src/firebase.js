@@ -19,3 +19,6 @@ const storage = firebase.storage();
 
 // exporting firebase configuration
 export { db, auth, storage, firebase };
+
+// Project Console: https://console.firebase.google.com/project/react-instagram-assignment/overview
+// Hosting URL: https://react-instagram-assignment.web.app
