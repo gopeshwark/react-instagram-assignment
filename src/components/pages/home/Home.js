@@ -41,7 +41,7 @@ const Home = () => {
           }))
         );
       });
-  }, []);
+  }, [currentUser]);
 
   console.log(location);
 

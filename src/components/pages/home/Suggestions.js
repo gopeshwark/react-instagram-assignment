@@ -9,7 +9,7 @@ const Suggestions = (user) => {
 
   return (
     <>
-      {username != currentUser?.displayName ? (
+      {username !== currentUser?.displayName ? (
         <div className="suggest">
           <div className="suggest__right">
             <div className="suggest__pic">
