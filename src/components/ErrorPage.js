@@ -6,17 +6,10 @@ const ErrorPage = () => {
   const currentUser = useContext(UserContext);
   return (
     <div className="error">
-      {!currentUser ? (
-        <p>loading...</p>
-      ) : (
-        <>
-          <p>
-            Either you are not logged in or page you are looking for us
-            unavailable
-          </p>
-          <Link to={currentUser ? "/" : "/login"}>Go to home page</Link>
-        </>
-      )}
+      <p>
+        Either you are not logged in or page you are looking for us unavailable
+      </p>
+      <Link to={currentUser ? "/" : "/login"}>Go to home page</Link>
     </div>
   );
 };

@@ -18,15 +18,18 @@ const Post = ({ postId, username, likes, caption, imageUrl, timestamp }) => {
       db.collection("posts")
         .doc(postId)
         .collection("comments")
-        .orderBy("timestamp", "desc")
-        .get()
-        .then((querySnapshot) => {
-          setComments(
-            querySnapshot.docs.map((doc) => ({
-              comment: doc.data(),
-            }))
-          );
-        });
+        // .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) =>
+          setComments(snapshot.docs.map((doc) => doc.data()))
+        );
+      // .get()
+      // .then((querySnapshot) => {
+      //   setComments(
+      //     querySnapshot.docs.map((doc) => ({
+      //       comment: doc.data(),
+      //     }))
+      //   );
+      // });
     }
 
     // return () => {
@@ -34,7 +37,7 @@ const Post = ({ postId, username, likes, caption, imageUrl, timestamp }) => {
     // };
   }, [postId]);
 
-  console.log(comments);
+  // console.log(postId);
 
   const postComment = (event) => {
     event.preventDefault();
@@ -79,10 +82,7 @@ const Post = ({ postId, username, likes, caption, imageUrl, timestamp }) => {
         </div>
         <CommentSection username={username} comment={caption} visible={false} />
         {comments.map((comment) => (
-          <CommentSection
-            username={comment.comment.username}
-            comment={comment.comment.text}
-          />
+          <CommentSection username={comment.username} comment={comment.text} />
         ))}
         {/* <CommentSection
           username="Second user"
@@ -127,7 +127,7 @@ const Post = ({ postId, username, likes, caption, imageUrl, timestamp }) => {
                 className="post__formButton"
                 disabled={!comment}
                 type="submit"
-                style={!comment && { opacity: 0.5 }}
+                // style={!comment && { opacity: 0.5 }}
               >
                 Post
               </button>

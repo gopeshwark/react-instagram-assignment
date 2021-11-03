@@ -3,34 +3,40 @@ import { db } from "../../../firebase";
 import Post from "../../posts/Post";
 import HomeRightSection from "./HomeRightSection";
 import { UserContext } from "../../../context/UserContext";
-import Loader from "../../loader/Loader";
-import { useLocation } from "react-router";
+// import Loader from "../../loader/Loader";
+// import { useLocation } from "react-router";
 
 const Home = () => {
   const currentUser = useContext(UserContext);
-  const location = useLocation();
+  // const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
+    // db.collection("posts")
+    //   .orderBy("timestamp", "desc")
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     setPosts(
+    //       querySnapshot.docs.map((doc) => ({
+    //         id: doc.id,
+    //         post: doc.data(),
+    //       }))
+    //     );
+    //   });
 
+    // for realtime data updation
     db.collection("posts")
       .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((snapshot) =>
         setPosts(
-          querySnapshot.docs.map((doc) => ({
+          snapshot.docs.map((doc) => ({
             id: doc.id,
             post: doc.data(),
           }))
-        );
-      });
+        )
+      );
 
     db.collection("users")
       .get()
@@ -43,38 +49,46 @@ const Home = () => {
       });
   }, [currentUser]);
 
-  console.log(location);
+  // if (!currentUser) {
+  //   setLoading(true);
+  //   return <Redirect to="/login" />;
+  // } else {
+  //   setLoading(false);
+  // }
 
-  if (loading) {
-    return <Loader />;
-  } else {
-    return (
-      <div className="home">
-        <div className="home__left">
-          {posts?.map(({ id, post }) => {
-            return (
-              <Post
-                key={id}
-                postId={id}
-                username={post.username}
-                likes={post.likes}
-                caption={post.caption}
-                imageUrl={post.imageUrl}
-                timestamp="time"
-              />
-            );
-          })}
-        </div>
-        <div className="home__right">
-          <HomeRightSection
-            users={users}
-            user={currentUser?.displayName}
-            displayName={currentUser?.displayName}
-          />
-        </div>
+  // console.log(posts);
+
+  // if (loading) {
+  //   return <Loader />;
+  // } else {
+  return (
+    <div className="home">
+      <div className="home__left">
+        {posts?.map(({ id, post }) => {
+          const { username, likes, caption, imageUrl, timestamp } = post;
+          return (
+            <Post
+              key={id}
+              postId={id}
+              username={username}
+              likes={likes}
+              caption={caption}
+              imageUrl={imageUrl}
+              timestamp="time"
+            />
+          );
+        })}
       </div>
-    );
-  }
+      <div className="home__right">
+        <HomeRightSection
+          users={users}
+          user={currentUser?.displayName}
+          displayName={currentUser?.displayName}
+        />
+      </div>
+    </div>
+  );
+  // }
 };
 
 export default Home;

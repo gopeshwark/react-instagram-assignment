@@ -42,7 +42,7 @@ const Signup = () => {
     setFullName("");
     setPassword("");
     setEmail("");
-    history.push("/login");
+    history.push("/");
   };
 
   return (
